@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: build-pipeline-run
+spec:
+  pipelineRef:
+    name: build-pipeline
+  params:
+    - name: repo-url
+      value: https://github.com/YOUR_GITHUB_USERNAME/ci-cd-mini-project.git
+    - name: image
+      value: YOUR_DOCKERHUB_USERNAME/nginx-sample:latest

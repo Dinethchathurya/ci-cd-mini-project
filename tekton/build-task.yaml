@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: build-and-push
+spec:
+  params:
+    - name: repo-url
+    - name: image
+  steps:
+    - name: git-clone
+      image: alpine/git
+      script: |
+        git clone $(params.repo-url) repo
+        cd repo
+        echo "Cloned repo"
+
+    - name: docker-build-push
+      image: gcr.io/kaniko-project/executor:latest
+      env:
+        - name: DOCKER_CONFIG
+          value: /tekton/home/.docker/
+      script: |
+        cd repo
+        /kaniko/executor --dockerfile=Dockerfile --context=. --destination=$(params.image)

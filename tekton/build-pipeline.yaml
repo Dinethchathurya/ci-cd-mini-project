@@ -1,0 +1,17 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: build-pipeline
+spec:
+  params:
+    - name: repo-url
+    - name: image
+  tasks:
+    - name: build
+      taskRef:
+        name: build-and-push
+      params:
+        - name: repo-url
+          value: $(params.repo-url)
+        - name: image
+          value: $(params.image)
